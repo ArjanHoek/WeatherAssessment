@@ -1,1 +1,20 @@
 <button (click)="logWeather()">Log weather</button>
+
+<nav>
+  <ul>
+    <li>
+      <a routerLink="/">Start</a>
+    </li>
+    <li>
+      <a routerLink="/current-weather">Current weather</a>
+    </li>
+    <li>
+      <a routerLink="/weather-forecast">Weather forecast</a>
+    </li>
+    <li>
+      <a routerLink="/weather-comparison">Weather comparison</a>
+    </li>
+  </ul>
+</nav>
+
+<router-outlet></router-outlet>
