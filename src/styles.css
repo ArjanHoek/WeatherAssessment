@@ -27,3 +27,7 @@ body {
 ul {
   list-style: none;
 }
+
+.mr-auto {
+  margin-right: auto;
+}

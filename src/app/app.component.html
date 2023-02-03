@@ -1,22 +1,31 @@
 <header>
   <nav>
     <ul>
-      <li>
-        <a routerLink="/">Start</a>
+      <li class="mr-auto">
+        <a
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLink="/"
+          >Start</a
+        >
       </li>
       <li>
-        <a routerLink="/current-weather">Current weather</a>
+        <a routerLinkActive="active" routerLink="/current-weather">Current</a>
       </li>
       <li>
-        <a routerLink="/weather-forecast">Weather forecast</a>
+        <a routerLinkActive="active" routerLink="/weather-forecast">Forecast</a>
       </li>
       <li>
-        <a routerLink="/weather-comparison">Weather comparison</a>
+        <a routerLinkActive="active" routerLink="/weather-comparison"
+          >Compare</a
+        >
       </li>
     </ul>
   </nav>
 </header>
 
 <main>
-  <router-outlet></router-outlet>
+  <div class="site-content">
+    <router-outlet></router-outlet>
+  </div>
 </main>
