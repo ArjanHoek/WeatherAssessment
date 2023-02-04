@@ -1,4 +1,26 @@
-<p>current-weather works!</p>
-<div>
-  <h3>Temperature: {{ currentWeatherData?.temperature }}</h3>
+<h3 *ngIf="isLoading; else titleWithLocation">Loading current weather...</h3>
+
+<ng-template #titleWithLocation>
+  <h3>Current weather in {{ data.location }}</h3>
+</ng-template>
+
+<div *ngIf="!isLoading">
+  <p>
+    So you want to know more about the current weather conditions in
+    {{ data.location }}? Here is a quick summary:
+  </p>
+
+  <ul>
+    <li>
+      The actual temperature is {{ data.temperature.actual }} degrees Celsius.
+    </li>
+    <li>
+      The perceived temperature is {{ data.temperature.actual }} degrees
+      Celsius.
+    </li>
+    <li>
+      The wind has a speed of {{ data.wind.speed }} kilometers per hour in the
+      {{ data.wind.direction }} direction.
+    </li>
+  </ul>
 </div>

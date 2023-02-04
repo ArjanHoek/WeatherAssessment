@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CurrentWeather } from 'src/models/weather-api-models';
 import { WeatherApiService } from 'src/services/weather-api.service';
 
 @Component({
@@ -7,9 +8,9 @@ import { WeatherApiService } from 'src/services/weather-api.service';
   styleUrls: ['./current-weather.component.css'],
 })
 export class CurrentWeatherComponent implements OnInit {
-  currentWeatherData: {
-    temperature: number;
-  };
+  data: CurrentWeather;
+  isLoading = true;
+  locationInput = 'Deventer';
 
   constructor(private weatherApiService: WeatherApiService) {}
 
@@ -18,18 +19,20 @@ export class CurrentWeatherComponent implements OnInit {
   }
 
   updateCurrentWeather() {
-    this.weatherApiService.getCurrentWeather('Nijmegen').subscribe({
-      next: data => {
-        const {
-          current: { temp_c: temperature },
-        } = data;
+    this.isLoading = true;
 
-        this.currentWeatherData = { ...this.currentWeatherData, temperature };
+    this.weatherApiService.getCurrentWeather(this.locationInput).subscribe({
+      next: data => {
+        this.data = data;
+        this.isLoading = false;
+        console.log(this.data);
       },
       error: error => {
         if (error.status === 400) {
           console.log('You might have entered some invalid input...');
         }
+
+        this.isLoading = false;
       },
     });
   }
