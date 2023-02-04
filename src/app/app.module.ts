@@ -9,6 +9,9 @@ import { WeatherComparisonComponent } from './weather-comparison/weather-compari
 import { RouterModule } from '@angular/router';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+
 const routes = [
   { path: '', component: LandingPageComponent },
   { path: 'current-weather', component: CurrentWeatherComponent },
@@ -22,6 +25,8 @@ const routes = [
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
+    NzLayoutModule,
+    NzMenuModule,
   ],
   declarations: [
     AppComponent,

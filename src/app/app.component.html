@@ -1,31 +1,33 @@
-<header>
-  <nav>
-    <ul>
-      <li class="mr-auto">
-        <a
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          routerLink="/"
-          >Start</a
-        >
-      </li>
-      <li>
-        <a routerLinkActive="active" routerLink="/current-weather">Current</a>
-      </li>
-      <li>
-        <a routerLinkActive="active" routerLink="/weather-forecast">Forecast</a>
-      </li>
-      <li>
-        <a routerLinkActive="active" routerLink="/weather-comparison"
-          >Compare</a
-        >
-      </li>
-    </ul>
-  </nav>
-</header>
-
-<main>
-  <div class="site-content">
-    <router-outlet></router-outlet>
-  </div>
-</main>
+<nz-layout>
+  <nz-header>
+    <header>
+      <nav>
+        <ul nz-menu nzMode="horizontal">
+          <li
+            nz-menu-item
+            routerLinkActive="ant-menu-item-selected"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <a routerLink="/">Start</a>
+          </li>
+          <li nz-menu-item routerLinkActive="ant-menu-item-selected">
+            <a routerLink="/current-weather">Current</a>
+          </li>
+          <li nz-menu-item routerLinkActive="ant-menu-item-selected">
+            <a routerLink="/weather-forecast">Forecast</a>
+          </li>
+          <li nz-menu-item routerLinkActive="ant-menu-item-selected">
+            <a routerLink="/weather-comparison">Compare</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+  </nz-header>
+  <nz-content>
+    <main>
+      <div class="site-content">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </nz-content>
+</nz-layout>
