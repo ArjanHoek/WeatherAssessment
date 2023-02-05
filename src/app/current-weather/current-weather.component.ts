@@ -9,31 +9,30 @@ import { WeatherApiService } from 'src/services/weather-api.service';
 })
 export class CurrentWeatherComponent implements OnInit {
   data: CurrentWeather;
-  isLoading = true;
-  locationInput = 'Deventer';
+  errorMessage = '';
 
   constructor(private weatherApiService: WeatherApiService) {}
 
   ngOnInit(): void {
-    this.updateCurrentWeather();
+    const storedValue = this.weatherApiService.currentWeather.getValue();
+    storedValue ? (this.data = storedValue) : this.refresh();
+    this.weatherApiService.currentWeather.subscribe(data => (this.data = data));
   }
 
-  updateCurrentWeather() {
-    this.isLoading = true;
+  refresh(): void {
+    navigator.geolocation.getCurrentPosition(
+      data => {
+        this.errorMessage = '';
 
-    this.weatherApiService.getCurrentWeather(this.locationInput).subscribe({
-      next: data => {
-        this.data = data;
-        this.isLoading = false;
-        console.log(this.data);
-      },
-      error: error => {
-        if (error.status === 400) {
-          console.log('You might have entered some invalid input...');
-        }
+        const {
+          coords: { latitude, longitude },
+        } = data;
 
-        this.isLoading = false;
+        this.weatherApiService.updateCurrentWeather(`${latitude},${longitude}`);
       },
-    });
+      error => {
+        this.errorMessage = error.message;
+      }
+    );
   }
 }

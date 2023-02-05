@@ -1,1 +1,18 @@
-<p>weather-forecast works!</p>
+<h1 *ngIf="isLoading; else titleWithLocation">Loading weather forecast...</h1>
+
+<ng-template #titleWithLocation>
+  <h1>Weather forecast in {{ data.location }}</h1>
+
+  <nz-list nzBordered *ngFor="let day of data.days">
+    <nz-list-header>
+      <button (click)="selectDay(day)">{{ formatDate(day.date) }}</button>
+    </nz-list-header>
+    <nz-list-item>
+      The temperature will be between {{ day.temperature.min }} and
+      {{ day.temperature.max }}, but {{ day.temperature.average }} on average.
+    </nz-list-item>
+  </nz-list>
+  <app-weather-forecast-detail
+    [data]="selectedDay"
+  ></app-weather-forecast-detail>
+</ng-template>

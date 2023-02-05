@@ -77,7 +77,7 @@ export interface CurrentWeatherRaw {
   current: Current;
 }
 
-export interface WeatherForecast {
+export interface WeatherForecastRaw {
   location: Location;
   current: Current;
   forecast: Forecast;
@@ -98,4 +98,28 @@ export interface CurrentWeather {
   };
   location: string;
   time: Date;
+}
+
+export interface WeatherForecastDay {
+  date: Date;
+  temperature: {
+    min: number;
+    max: number;
+    average: number;
+  };
+  precipitation: {
+    rain: {
+      chance: number;
+      amount_mm: number;
+    };
+    snow: {
+      chance: number;
+      amount_cm: number;
+    };
+  };
+}
+
+export interface WeatherForecast {
+  days: WeatherForecastDay[];
+  location: string;
 }

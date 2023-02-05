@@ -1,12 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { combineLatest, delay, map, Observable } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  delay,
+  map,
+  Observable,
+  Subject,
+} from 'rxjs';
 import {
   CurrentWeather,
   CurrentWeatherRaw,
   WeatherForecast,
+  WeatherForecastDay,
+  WeatherForecastRaw,
 } from '../models/weather-api-models';
-import { formatWeatherData } from 'src/utilities/helpers';
+import {
+  formatCurrentWeatherData,
+  formatWeatherForecastData,
+} from 'src/utilities/helpers';
 
 const url = 'https://api.weatherapi.com/v1/';
 const apiKey = 'f40e5995730147ca8f3135201232301';
@@ -15,6 +27,11 @@ const apiKey = 'f40e5995730147ca8f3135201232301';
   providedIn: 'root',
 })
 export class WeatherApiService {
+  // BehaviorSubject is used to be able to get the current value
+  currentWeather = new BehaviorSubject<CurrentWeather>(null);
+
+  weatherForecastDay = new Subject<WeatherForecastDay>();
+
   constructor(private http: HttpClient) {}
 
   //retourneert informatie over de locatie en de huidige weersinformatie
@@ -24,16 +41,31 @@ export class WeatherApiService {
         `${url}current.json?key=${apiKey}&q=${location}&aqi=no`
       )
       .pipe(
-        delay(1000), // Delay was added to simulate slow connection, enablabling testing of UI loading
-        map(data => formatWeatherData(data))
+        delay(300), // Delay was added to simulate slow connection, enablabling testing of UI loading
+        map(formatCurrentWeatherData)
       );
+  }
+
+  // This method is used to retrieve current weather data and store it in the service
+  updateCurrentWeather(location: string): void {
+    this.currentWeather.next(null);
+
+    this.getCurrentWeather(location).subscribe(data =>
+      this.currentWeather.next(data)
+    );
   }
 
   //retourneert informatie over de locatie en de huidige weersvoorspelling voor de komende 5 dagen
   getWeatherForecast(location: string): Observable<WeatherForecast> {
-    return this.http.get<WeatherForecast>(
-      `${url}forecast.json?key=${apiKey}&q=${location}&days=5&aqi=no&alerts=yes`
-    );
+    return this.http
+      .get<WeatherForecastRaw>(
+        `${url}forecast.json?key=${apiKey}&q=${location}&days=5&aqi=no&alerts=yes`
+      )
+      .pipe(delay(300), map(formatWeatherForecastData));
+  }
+
+  setWeatherForecastDay(weatherForecastDay: WeatherForecastDay): void {
+    this.weatherForecastDay.next(weatherForecastDay);
   }
 
   //retourneert informatie over de twee locaties en de huidige weersinformatie voor beide

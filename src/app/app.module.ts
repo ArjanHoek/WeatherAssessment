@@ -11,11 +11,16 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { WeatherForecastDetailComponent } from './weather-forecast-detail/weather-forecast-detail.component';
 
 const routes = [
   { path: '', component: LandingPageComponent },
   { path: 'current-weather', component: CurrentWeatherComponent },
-  { path: 'weather-forecast', component: WeatherForecastComponent },
+  {
+    path: 'weather-forecast',
+    component: WeatherForecastComponent,
+  },
   { path: 'weather-comparison', component: WeatherComparisonComponent },
 ];
 
@@ -27,6 +32,7 @@ const routes = [
     RouterModule.forRoot(routes),
     NzLayoutModule,
     NzMenuModule,
+    NzListModule,
   ],
   declarations: [
     AppComponent,
@@ -34,6 +40,7 @@ const routes = [
     WeatherForecastComponent,
     WeatherComparisonComponent,
     LandingPageComponent,
+    WeatherForecastDetailComponent,
   ],
   bootstrap: [AppComponent],
 })

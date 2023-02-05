@@ -1,0 +1,7 @@
+<h2 *ngIf="!data; else weatherForecastDay">
+  Select a day to view more details
+</h2>
+
+<ng-template #weatherForecastDay>
+  <div>{{ data.date }}</div>
+</ng-template>
