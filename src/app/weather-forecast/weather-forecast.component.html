@@ -1,7 +1,8 @@
-<h1 *ngIf="isLoading; else titleWithLocation">Loading weather forecast...</h1>
+<h1 *ngIf="!data; else titleWithLocation">Loading weather forecast...</h1>
 
 <ng-template #titleWithLocation>
   <h1>Weather forecast in {{ data.location }}</h1>
+  <button (click)="refresh()">Refresh</button>
 
   <nz-list nzBordered *ngFor="let day of data.days">
     <nz-list-header>

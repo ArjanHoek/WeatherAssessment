@@ -14,8 +14,7 @@ export class WeatherForecastComponent implements OnInit {
   data: WeatherForecast;
   isLoading = true;
   selectedDay: WeatherForecastDay;
-
-  locationInput = 'Deventer';
+  errorMessage = '';
 
   constructor(private weatherApiService: WeatherApiService) {}
 
@@ -28,19 +27,18 @@ export class WeatherForecastComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isLoading = true;
-
-    this.weatherApiService.getWeatherForecast(this.locationInput).subscribe({
-      next: data => {
-        console.log(data);
-
-        this.data = data;
-        this.isLoading = false;
-      },
-      error: e => {
-        console.log(e);
-        this.isLoading = false;
-      },
+    const storedValue = this.weatherApiService.weatherForecast.getValue();
+    storedValue ? (this.data = storedValue) : this.refresh();
+    this.weatherApiService.weatherForecast.subscribe(data => {
+      this.data = data;
+      console.log(data);
     });
+  }
+
+  refresh(): void {
+    this.weatherApiService.updateByCurrentLocation(
+      location => this.weatherApiService.updateWeatherForecast(location),
+      message => (this.errorMessage = message)
+    );
   }
 }

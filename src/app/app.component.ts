@@ -7,12 +7,5 @@ import { WeatherApiService } from 'src/services/weather-api.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  constructor(private weatherApiService: WeatherApiService) {}
-
-  logWeather() {
-    const weather = this.weatherApiService.getCurrentWeather('Nijmegen');
-    weather.subscribe(data => {
-      console.log(data);
-    });
-  }
+  constructor() {}
 }

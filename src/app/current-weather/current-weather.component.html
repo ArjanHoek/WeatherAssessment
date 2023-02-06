@@ -1,11 +1,11 @@
-<h3 *ngIf="!data; else dataDisplay">Loading current weather...</h3>
+<h1 *ngIf="!data; else dataDisplay">Loading current weather...</h1>
 <span *ngIf="errorMessage">{{ errorMessage }}</span>
+<button (click)="refresh()">Refresh</button>
 
 <ng-template #dataDisplay>
-  <h3>Current weather in {{ data.location }}</h3>
+  <h1>Current weather in {{ data.location }}</h1>
 
   <div>
-    <button (click)="refresh()">Refresh</button>
     <p>
       So you want to know more about the current weather conditions in
       {{ data.location }}? Here is a quick summary:

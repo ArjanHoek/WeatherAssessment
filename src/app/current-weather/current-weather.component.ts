@@ -20,18 +20,14 @@ export class CurrentWeatherComponent implements OnInit {
   }
 
   refresh(): void {
-    navigator.geolocation.getCurrentPosition(
-      data => {
+    this.weatherApiService.updateByCurrentLocation(
+      location => {
+        this.weatherApiService.updateCurrentWeather(location);
         this.errorMessage = '';
-
-        const {
-          coords: { latitude, longitude },
-        } = data;
-
-        this.weatherApiService.updateCurrentWeather(`${latitude},${longitude}`);
       },
-      error => {
-        this.errorMessage = error.message;
+      message => {
+        this.weatherApiService.currentWeather.next(null);
+        this.errorMessage = message;
       }
     );
   }
