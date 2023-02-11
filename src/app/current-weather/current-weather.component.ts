@@ -14,21 +14,9 @@ export class CurrentWeatherComponent implements OnInit {
   constructor(private weatherApiService: WeatherApiService) {}
 
   ngOnInit(): void {
-    const storedValue = this.weatherApiService.currentWeather.getValue();
-    storedValue ? (this.data = storedValue) : this.refresh();
-    this.weatherApiService.currentWeather.subscribe(data => (this.data = data));
-  }
-
-  refresh(): void {
-    this.weatherApiService.updateByCurrentLocation(
-      location => {
-        this.weatherApiService.updateCurrentWeather(location);
-        this.errorMessage = '';
-      },
-      message => {
-        this.weatherApiService.currentWeather.next(null);
-        this.errorMessage = message;
-      }
-    );
+    this.weatherApiService.getCurrentWeather('rotterdam').subscribe(data => {
+      this.data = data;
+      console.log(this.data);
+    });
   }
 }

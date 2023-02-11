@@ -19,20 +19,16 @@ const apiKey = 'f40e5995730147ca8f3135201232301';
   providedIn: 'root',
 })
 export class WeatherApiService {
-  currentWeather = new BehaviorSubject<CurrentWeather>(null);
   weatherForecast = new BehaviorSubject<WeatherForecast>(null);
 
   constructor(private http: HttpClient) {}
 
-  updateCurrentWeather(location: string): void {
-    this.currentWeather.next(null);
-
-    this.http
+  getCurrentWeather(location: string): Observable<CurrentWeather> {
+    return this.http
       .get<CurrentWeatherRaw>(
         `${url}current.json?key=${apiKey}&q=${location}&aqi=no`
       )
-      .pipe(delay(300), map(formatCurrentWeatherData))
-      .subscribe(data => this.currentWeather.next(data));
+      .pipe(delay(300), map(formatCurrentWeatherData));
   }
 
   updateWeatherForecast(location: string): void {
@@ -46,29 +42,13 @@ export class WeatherApiService {
       .subscribe(data => this.weatherForecast.next(data));
   }
 
-  updateByCurrentLocation(
-    onSuccess: (location: string) => void,
-    onFail: (message: string) => void
-  ): void {
-    navigator.geolocation.getCurrentPosition(
-      ({ coords: { latitude, longitude } }) =>
-        onSuccess(`${latitude},${longitude}`),
-      error => onFail(error.message)
-    );
-  }
-
-  //retourneert informatie over de twee locaties en de huidige weersinformatie voor beide
   getWeatherComparison(
     locationOne: string,
     locationTwo: string
-  ): Observable<[CurrentWeatherRaw, CurrentWeatherRaw]> {
-    return combineLatest(
-      this.http.get<CurrentWeatherRaw>(
-        `${url}current.json?key=${apiKey}&q=${locationOne}&days=5&aqi=no&alerts=yes`
-      ),
-      this.http.get<CurrentWeatherRaw>(
-        `${url}current.json?key=${apiKey}&q=${locationTwo}&days=5&aqi=no&alerts=yes`
-      )
-    );
+  ): Observable<[CurrentWeather, CurrentWeather]> {
+    return combineLatest([
+      this.getCurrentWeather(locationOne),
+      this.getCurrentWeather(locationTwo),
+    ]);
   }
 }

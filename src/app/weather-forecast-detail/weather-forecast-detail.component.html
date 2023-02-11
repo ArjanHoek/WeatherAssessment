@@ -1,7 +1,38 @@
-<h2 *ngIf="!data; else weatherForecastDay">
-  Select a day to view more details
-</h2>
+<nz-drawer
+  [nzClosable]="true"
+  [nzVisible]="true"
+  nzSize="large"
+  nzPlacement="right"
+  nzTitle="{{ getDate() }}"
+  (nzOnClose)="close()"
+>
+  <ng-container *nzDrawerContent>
+    <p>
+      The temperature will vary between {{ getDay().temperature.min }} and
+      {{ getDay().temperature.max }}
+    </p>
+    <p>
+      When it comes to precipitation, rain will fall with a chance of
+      {{ getDay().precipitation.rain.chance }}%. In total, there will be
+      {{ getDay().precipitation.rain.amount_mm }}mm of rain.
+    </p>
+  </ng-container>
+</nz-drawer>
 
-<ng-template #weatherForecastDay>
-  <div>{{ data.date }}</div>
-</ng-template>
+<!-- 
+  date: Date;
+temperature: {
+  min: number;
+  max: number;
+  average: number;
+};
+precipitation: {
+  rain: {
+    chance: number;
+    amount_mm: number;
+  };
+  snow: {
+    chance: number;
+    amount_cm: number;
+  };
+}; -->

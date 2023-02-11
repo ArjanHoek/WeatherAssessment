@@ -1,28 +1,6 @@
 <h1 *ngIf="!data; else dataDisplay">Loading current weather...</h1>
 <span *ngIf="errorMessage">{{ errorMessage }}</span>
-<button (click)="refresh()">Refresh</button>
 
 <ng-template #dataDisplay>
-  <h1>Current weather in {{ data.location }}</h1>
-
-  <div>
-    <p>
-      So you want to know more about the current weather conditions in
-      {{ data.location }}? Here is a quick summary:
-    </p>
-
-    <ul>
-      <li>
-        The actual temperature is {{ data.temperature.actual }} degrees Celsius.
-      </li>
-      <li>
-        The perceived temperature is {{ data.temperature.perceived }} degrees
-        Celsius.
-      </li>
-      <li>
-        The wind has a speed of {{ data.wind.speed }} kilometers per hour in the
-        {{ data.wind.direction }} direction.
-      </li>
-    </ul>
-  </div>
+  <app-weather-summary [data]="data"></app-weather-summary>
 </ng-template>

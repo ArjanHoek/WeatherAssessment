@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  WeatherForecast,
-  WeatherForecastDay,
-} from 'src/models/weather-api-models';
+import { Router } from '@angular/router';
+import { WeatherForecast } from 'src/models/weather-api-models';
 import { WeatherApiService } from 'src/services/weather-api.service';
 
 @Component({
@@ -12,8 +10,6 @@ import { WeatherApiService } from 'src/services/weather-api.service';
 })
 export class WeatherForecastComponent implements OnInit {
   data: WeatherForecast;
-  isLoading = true;
-  selectedDay: WeatherForecastDay;
   errorMessage = '';
 
   constructor(private weatherApiService: WeatherApiService) {}
@@ -22,23 +18,11 @@ export class WeatherForecastComponent implements OnInit {
     return `${date.getDate()}-${date.getMonth() + 1}`;
   }
 
-  selectDay(data: WeatherForecastDay): void {
-    this.selectedDay = data;
-  }
-
   ngOnInit(): void {
-    const storedValue = this.weatherApiService.weatherForecast.getValue();
-    storedValue ? (this.data = storedValue) : this.refresh();
-    this.weatherApiService.weatherForecast.subscribe(data => {
-      this.data = data;
-      console.log(data);
-    });
-  }
+    this.weatherApiService.updateWeatherForecast('deventer');
 
-  refresh(): void {
-    this.weatherApiService.updateByCurrentLocation(
-      location => this.weatherApiService.updateWeatherForecast(location),
-      message => (this.errorMessage = message)
+    this.weatherApiService.weatherForecast.subscribe(
+      data => (this.data = data)
     );
   }
 }
