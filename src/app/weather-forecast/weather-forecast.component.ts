@@ -1,4 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { Subscription } from 'rxjs';
 import { WeatherForecast } from 'src/models/weather-api-models';
 import { WeatherApiService } from 'src/services/weather-api.service';
 
@@ -7,9 +14,10 @@ import { WeatherApiService } from 'src/services/weather-api.service';
   templateUrl: './weather-forecast.component.html',
   styleUrls: ['./weather-forecast.component.css'],
 })
-export class WeatherForecastComponent implements OnInit {
+export class WeatherForecastComponent implements OnInit, OnDestroy {
   @ViewChild('inputField', { static: true }) inputField: ElementRef;
   data: WeatherForecast;
+  subscription: Subscription;
 
   constructor(private weatherApiService: WeatherApiService) {}
 
@@ -20,9 +28,17 @@ export class WeatherForecastComponent implements OnInit {
   ngOnInit(): void {
     this.setData();
 
-    this.weatherApiService.weatherForecast.subscribe(
-      data => (this.data = data)
+    this.subscription = this.weatherApiService.weatherForecast.subscribe(
+      data => {
+        this.data = data;
+        console.log('===');
+        console.log(data);
+      }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   setData(location?: string) {

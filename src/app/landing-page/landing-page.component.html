@@ -1,1 +1,132 @@
 <h1>Welcome to the weather app</h1>
+
+<p>
+  Dit is de 'weather assessment'. Op deze landingspagina vind je uitleg over de
+  bouw van de applicatie.
+</p>
+
+<p>
+  Er zijn, naast de landingspagina, 3 andere pagina's/tabbladen waarop
+  informatie te vinden is.
+</p>
+
+<ul>
+  <li>
+    <p>
+      Op de 'Current' pagina kun je de huidige weersinformatie vinden. Bij
+      openen van de pagina wordt de API direct aangeroepen. Het was mijn idee om
+      hier de huidige locatie op te vragen en heb een poging gedaan om de JS
+      navigator API te gebruiken.
+      <br /><strong>Voor de technische uitleg:</strong> Dit leek te werken, maar
+      ik voorzag wel wat meerwerk om dit netjes toe te passen en heb dit vanwege
+      tijdgebrek toch achterwege gelaten. In mijn eerste poging had ik een
+      functie geschreven waar ik callbacks mee kon geven zodra de locatie
+      succesvol was opgevraagd, maar deze codeerstijl week af van Angular, waar
+      gebruik wordt gemaakt van Observables met subscriptions. Ik vond nog wel
+      ergens een library die een Observable voor de navigator API had gemaakt,
+      dat leek me nog wel een interessante optie en zou het werk ook stukken
+      makkelijker maken, maar daar ben ik niet meer aan toegekomen.
+    </p>
+    <p>
+      Het zoekveld kan worden gebruikt om een locatie in te vullen en de API aan
+      te roepen. Ik heb bij elke API aanroep een delay gebruikt om duidelijk te
+      maken dat er in de UI rekening is gehouden met een laadscherm, al bestaat
+      dit in deze applicatie uit een simpel stukje tekst.
+    </p>
+    <p>
+      De API wordt direct bij het openen van het tabblad aangeroepen, omdat de
+      gebruiker verwacht dat de data die getoond is de meest actuele data is.
+      Los van het input veld en als de data op basis van de huidige locatie zou
+      worden gebruikt, dan zou het voor een gebruiker vreemd zijn om handmatig
+      een knop in te moeten drukken om de meest actuele data op te halen.
+      Vandaar dat de data ook 'lokaal' in het component wordt opgeslagen en niet
+      bewaard wordt wanneer andere tabbladen worden bezocht.
+    </p>
+  </li>
+  <li>
+    <p>
+      Op de 'Forecast' pagina kun je de data van de komende dagen ophalen. Ik
+      kreeg in plaats van 5 dagen slecht 3 dagen aan data terug, en na
+      raadplegen van de API documentatie bleek dit ook correct te zijn. Vandaar
+      dat er dus maar 3 dage naan data te zien is.
+    </p>
+    <p>
+      Verder geldt hetzelfe als bij het vorige tabblad, waarbij bij openen van
+      het tabblad direct de API wordt aangeroepen, liefst op basis van de
+      huidige locatie. Daarnaast is er ook weer het input veld waar een locatie
+      kan worden ingevuld.
+    </p>
+    <p>
+      Ik heb nested routing gebruikt om een subbpagina te tonen. Door gebruik te
+      maken van het design systeem dat door jullie is voorgesteld heb ik een
+      'drawer' element kunnen inzetten die aan de rechterkant verschijnt na
+      klikken op één van de dagen in de tabel (deze zou naar binnen moeten
+      glijden, maar dit werkt niet (waarschijnlijk vanwege nested routing)). Er
+      wordt een param toegevoegd aan de url, die refereert naar het aantal dagen
+      vanaf de huidige dag. Die param kan vervolgens worden gebruikt om de
+      juiste dag op te halen uit de array van dagen die van de API is
+      teruggekomen.
+    </p>
+    <p>
+      Het grootste verschil met het vorige component is dat de data vanuit de
+      API wordt opgeslagen in de service en niet in het component. Dit heb ik
+      gedaan omdat ik de data in twee componenten nodig heb (het overzicht en de
+      detail pagina/drawer). Ik heb naar andere manieren gezocht om data door te
+      geven aan de child route, maar dit leek me de meest voor de hand liggende
+      oplossing. Voordeel is dat voorspellingsdata waarschijnlijk minder gevoel
+      is voor schommelingen (anders dan bij de huidige weer data, waar het van
+      het ene op het andere moment toch kan regenen), waardoor de data iets
+      langer houdbaar is en dus bewaard kan blijven in de applicatie.
+      Codetechnisch kwam ik hier echter problemen tegen met de subscription van
+      de data, omdat het gaat om een subscription van een Observable die in de
+      service is opgeslagen. Bij verlaten van het component wordt die
+      subscription niet geannuleerd, maar wordt er wel een nieuwe subscription
+      gemaakt zodra het component opnieuw wordt geopend.. Als oplossing hiervoor
+      heb ik de subscription opgeslagen in het component en ngOnDestroy()
+      gebruikt om de subscription te annuleren. Wellicht is hier binnen de
+      Angular omgeving een betere oplossing voor, maar dit lijkt ook prima te
+      werken.
+    </p>
+  </li>
+  <li>
+    <p>
+      Dan is er nog het 'Compare' tabblab, waar ik omwille van de tijd minder
+      tijd aan heb besteed. Er zijn nu hardcoded twee locaties ingevuld en
+      vervolgens wordt hetzelfde component als op de 'Current' pagina ingeladen,
+      maar dan twee keer. Ik had natuurlijk liever wat data ook daadwerkelijk
+      vergeleken door berekeningen te maken en in tabellen naast elkaar te
+      zetten, maar dit is vanwege het gebrek aan tijd niet gelukt.
+    </p>
+    <p>
+      Verder had ik het misschien ook netter of logischer gevonden om het
+      'Compare' tabblad als child route onder 'Current' te zetten
+      (/current-weather/compare), waarbij het 'Current' tabblad blijft zoals het
+      nu is, maar dan met een extra inputveld, waarbij er ook weer een drawer in
+      beeld komt als daar input is ingevuld.
+    </p>
+  </li>
+  <li>
+    <p>
+      Qua design heb ik dus ng-zorro-antd gebruikt. Hier heb ik de basic layout
+      mee gemaakt, als ook de tabel op de 'Forecast' pagina, de drawer die
+      daarbij tevoorschijn komt, en ook de input elementen. Er is vast nog veel
+      meer uit te halen, maar ook dit heb ik achterwege gelaten omwille van de
+      tijd.
+    </p>
+    <p>
+      Ik had graag gezien dat bepaalde vergelijkbare logica in componenten kon
+      worden verzameld in een enkel overkoepelend component of in een aparte
+      service. Dit ben ik wel gewend bij React (hooks of hoc's), maar omdat ik
+      nog maar kort bekend ben met Angular ben ik hier nog niet bekend mee.
+      Vandaar dat er wat herhaling van code staat hier en daar.
+    </p>
+    <p>
+      Tot slot had ik nog wat aan error handling willen doen. Met variabele
+      gebruikersinput kan het zijn dat een locatie niet bestaat. In de huidige
+      applicatie blijft het component hangen met de laadtekst. In de meest
+      simpele vorm zouden er dus een extra 'loading' property en een
+      'errorMessage' property bij kunnen komen, zodat dit ook aan de gebruiker
+      duidelijk kan worden gemaakt.
+    </p>
+  </li>
+</ul>

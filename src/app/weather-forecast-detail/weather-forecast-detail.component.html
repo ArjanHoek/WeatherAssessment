@@ -3,18 +3,18 @@
   [nzVisible]="true"
   nzSize="large"
   nzPlacement="right"
-  nzTitle="{{ getDate() }}"
+  nzTitle="{{ getDateString() }}"
   (nzOnClose)="close()"
 >
   <ng-container *nzDrawerContent>
     <p>
-      The temperature will vary between {{ getDay().temperature.min }} and
-      {{ getDay().temperature.max }}
+      The temperature will vary between {{ data.temperature.min }} and
+      {{ data.temperature.max }}
     </p>
     <p>
       When it comes to precipitation, rain will fall with a chance of
-      {{ getDay().precipitation.rain.chance }}%. In total, there will be
-      {{ getDay().precipitation.rain.amount_mm }}mm of rain.
+      {{ data.precipitation.rain.chance }}%. In total, there will be
+      {{ data.precipitation.rain.amount_mm }}mm of rain.
     </p>
   </ng-container>
 </nz-drawer>
