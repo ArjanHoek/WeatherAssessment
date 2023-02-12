@@ -1,5 +1,19 @@
+<nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+  <input
+    (keydown)="updateOnEnter($event)"
+    #inputField
+    type="text"
+    nz-input
+    placeholder="Enter location..."
+  />
+</nz-input-group>
+<ng-template #suffixIconButton>
+  <button (click)="update()" nz-button nzType="primary" nzSearch>
+    <span nz-icon nzType="search"></span>
+  </button>
+</ng-template>
+
 <h1 *ngIf="!data; else dataDisplay">Loading current weather...</h1>
-<span *ngIf="errorMessage">{{ errorMessage }}</span>
 
 <ng-template #dataDisplay>
   <app-weather-summary [data]="data"></app-weather-summary>

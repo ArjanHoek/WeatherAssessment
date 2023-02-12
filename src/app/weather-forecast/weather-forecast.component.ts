@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { WeatherForecast } from 'src/models/weather-api-models';
 import { WeatherApiService } from 'src/services/weather-api.service';
 
@@ -9,8 +8,8 @@ import { WeatherApiService } from 'src/services/weather-api.service';
   styleUrls: ['./weather-forecast.component.css'],
 })
 export class WeatherForecastComponent implements OnInit {
+  @ViewChild('inputField', { static: true }) inputField: ElementRef;
   data: WeatherForecast;
-  errorMessage = '';
 
   constructor(private weatherApiService: WeatherApiService) {}
 
@@ -19,10 +18,29 @@ export class WeatherForecastComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.weatherApiService.updateWeatherForecast('deventer');
+    this.setData();
 
     this.weatherApiService.weatherForecast.subscribe(
       data => (this.data = data)
     );
+  }
+
+  setData(location?: string) {
+    this.data = null;
+
+    this.weatherApiService.updateWeatherForecast(location || 'Nijmegen');
+  }
+
+  update() {
+    this.setData(this.inputField.nativeElement.value);
+    this.inputField.nativeElement.value = '';
+  }
+
+  updateOnEnter(event: KeyboardEvent) {
+    const { key } = event;
+
+    if (key === 'Enter') {
+      this.update();
+    }
   }
 }

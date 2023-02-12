@@ -12,9 +12,11 @@ import { WeatherForecastDetailComponent } from './weather-forecast-detail/weathe
 
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzListModule } from 'ng-zorro-antd/list';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { WeatherSummaryComponent } from './weather-summary/weather-summary.component';
 
 const routes = [
@@ -40,6 +42,9 @@ const routes = [
     NzMenuModule,
     NzTableModule,
     NzDrawerModule,
+    NzInputModule,
+    NzIconModule,
+    NzButtonModule,
   ],
   declarations: [
     AppComponent,
