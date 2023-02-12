@@ -1,22 +1,6 @@
-<h1 *ngIf="!data; else titleWithLocation">Loading...</h1>
+<h1 *ngIf="!data; else dataDisplay">Loading current weather...</h1>
 
-<ng-template #titleWithLocation>
-  <h1>Current weather comparison</h1>
-
-  <nz-table nzShowPagination="false" #basicTable [nzData]="data">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Temperature</th>
-        <th>Chance of rain</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of basicTable.data; let i = index">
-        <td>{{ data.location }}</td>
-      </tr>
-    </tbody>
-  </nz-table>
-
-  <router-outlet></router-outlet>
+<ng-template #dataDisplay>
+  <app-weather-summary [data]="data[0]"></app-weather-summary>
+  <app-weather-summary [data]="data[1]"></app-weather-summary>
 </ng-template>
